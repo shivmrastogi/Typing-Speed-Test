@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Check your Typing speed</title>
+	<meta name="viewport" content="width=device-width,initial-scale=1.0">
+	<link href="https://fonts.googleapis.com/css?family=Josefin+Slab" rel="stylesheet">
+	<style>
+		body{
+			font-family: 'Josefin Slab', serif;
+			margin: 0;
+			background-color: #6f6fde;
+		}
+		.container h1,h3{
+			text-align: center;
+			margin: 15px auto;
+			color: black;
+			width: 100%;
+			padding: 20px 0px;
+			margin: 0px;
+			color: white;
+		}
+		.content{
+			height: auto;
+			padding: 10px;
+			box-sizing: border-box;
+			font-size: 30px;
+			color: wheat;
+			width: 100%;
+			margin: 0 auto;
+			text-align: center;	
+		}
+		.input-text{
+			width: 100%;
+			height: 250px;
+		}
+		.input-text textarea{
+			width: 90%;
+			height: 100%;
+			display: block;
+			margin: 0px auto;
+			font-size: 24px;
+			box-sizing: border-box;
+			border: 10px solid blue;
+			background-color: #e5e5e5;
+			
+		}
+		.container{
+			display: flex;
+			flex-wrap: wrap;
+			
+		}
+		.timer{
+			height: 50px;
+			width: 100%;
+			
+		}
+		.timer h3{
+			padding-top: 5px;
+			font-size: 30px;
+		}
+		.completion{
+			display: none;
+			position: absolute;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+		}
+		.comp{
+			position: absolute;
+			height: 60vh;
+			background-color: deeppink;
+			width: 40%;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%,-50%);
+			text-align: center;
+			font-size: 40px;
+			color: white;
+		}
+		.cross{
+			color: white;
+			font-size: 50px;
+			transform: rotate(45deg);
+			position: absolute;
+			right: 15px;
+			top: 0px;
+			cursor: pointer;
+			
+		}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<h1>Test Your Typing Speed</h1>
+		<div class="timer">
+			<h3>Remaining Time : <span id="sec">60</span> sec</h3>
+		</div>
+		<div class="content">
+			<p id="original-text"></p>
+		</div>
+		<div class="input-text">
+			<textarea id="user-input" placeholder="Start typing here" onpaste="return false"></textarea>
+		</div>
+
+	</div>
+	<div class="completion">
+		<div class="comp">
+			<span class="cross">+</span>
+			<p id="words"></p>
+		</div>
+	</div>
+</body>
+	<script>
+		var a=Math.floor(Math.random()*10);
+		
+		var array=["An essay has been defined in a variety of ways One definition is a prose composition with a focused subject of discussion or a long systematic discourse It is difficult to define the genre into which essays fall Aldous Huxley a leading essayist gives guidance on the subject He notes that the essay is a literary device for saying almost everything about almost anything and adds that by tradition almost by definitio" ,
+			     
+			     "that essays belong to a literary species whose extreme The genre is not defined but might include propaganda works of early Soviet parliamentarians like Dziga Vertov presentday filmmakers including Chris Marker Michael Moore Bowling for Columbine and Fahrenheit Errol Morris The Thin Blue Line Morgan Spurlock Supersize Me A Film of Epic Portions" ,
+			     
+			     "essays make the best not of one not of two, but of all the three worlds in which it is possible for the essay to exist into some of his plays Orson Welles made an essay film in his own pioneering style released in called for Fake which dealt specifically with art forger Elmyr de Hory and with the themes of deception and authenticity in general. These are often published online on video hosting" ,
+			     
+			     "essays were a favored tool of polemicists who aimed at convincing readers of their projections into some of his plays Orson Welles made an essay film in his own pioneering style released in called for Fake which dealt specifically with art forger Elmyr de Hory and with the themes of deception and authenticity in general. These are often published online on video hosting services ",
+			    
+			    "order A writer using this rhetorical method must consider the subject determine the purpose consider the audience think critically about different causes or consequences consider a thesis statement arrange the parts consider the language and decide on a conclusion",
+			    
+			    "objects while contrasting highlights the differences between two or more objects When writing a compare contrast essay writers need to determine their purpose consider their audience consider the basis and points of comparison consider their thesis statement arrange and develop the comparison and reach a conclusion Compare and contrast is arranged emphatically",
+			    
+			    "around introduction with a topic's relevance and a thesis statement body paragraphs with arguments linking back to the main thesis and conclusion In addition an argumentative essay may include a refutation section where conflicting ideas are acknowledged described and criticized Each argument of argumentative essay should be supported with sufficient evidence relevant to the point",
+			    
+			    "was a playwright who experimented with film and incorporated film projections into some of his plays Orson Welles made an essay film in his own pioneering style released in called for Fake which dealt specifically with art forger Elmyr de Hory and with the themes of deception and authenticity in general. These are often published online on video hosting services" ,
+			    
+			    "convention helps others whether teachers or fellow scholars to understand the basis of facts and quotations the author uses to support the essays argument and helps readers evaluate to what extent the argument is supported by evidence and to evaluate the quality of that evidence The academic essay tests the students ability to present their thoughts in an organized way and is designed to test their intellectual capabilities",
+			     
+			    "defined but might include propaganda works coronation of King Edward which mixes actual footage with shots of a recreation of the event Brecht was a playwright who experimented with film and incorporated film projections into some of his plays Orson Welles made an essay film in his own pioneering style"];
+		
+		document.getElementById("original-text").innerHTML=array[a].toLowerCase();
+		var cross= document.querySelector(".cross");
+		cross.addEventListener("click",function()
+					    {
+			document.querySelector('.completion').style.display="none";
+			window.location.replace('index.html');
+			
+		});
+		var time=59;
+		var interval=0;
+		var timerstatus=false;
+		var match1=true;
+		var x=0;
+		function timer()
+		{
+			document.getElementById('sec').innerHTML=time;
+			if(time==0)
+				{
+					clearInterval(interval);
+					var words=text.value.split(" ");
+					if(match1==false)
+						var len=words.length-1;
+					else
+						var len=words.length;
+					document.getElementById('words').innerHTML="Your Typing Speed is "+ len+ " wpm";
+					document.querySelector('.completion').style.display="block";
+				}
+			time--;
+		}
+		function calltimer()
+		{	var length=text.value.length;
+		 if(length==0 && timerstatus==false)
+			 {
+			interval=setInterval(timer,1000);
+				 timerstatus=true;
+			 }
+		 if(match1==false)
+			 {
+					text.value=text.value.substring(0,x-1);	 
+			 }
+		}
+		function match()
+		{	var txtlngth=text.value.length;
+		 	
+		 	var orgtxt=document.getElementById('original-text').innerHTML;
+		 	orgtxt=orgtxt.substring(0,txtlngth);
+		 	if(txtlngth==0)
+				{
+					text.style.borderColor="blue";
+					match1=true;
+				}
+		 else{
+		 	if(text.value==orgtxt)
+				{
+				text.style.borderColor="green";
+					match1=true;
+					
+				}
+		 	else
+				{
+				text.style.borderColor="red";
+					match1=false;
+					x=text.value.length;	
+				}
+		 }
+		}
+		var text=document.getElementById('user-input');
+		text.addEventListener("keypress",calltimer);
+		text.addEventListener("keyup",match);
+	</script>
+</html>
